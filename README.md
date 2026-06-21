@@ -16,7 +16,7 @@ You opened a case for the Patel residential purchase. You ran the fact-find — 
 - Tracks **procuration fees** including clawback risk window (default 24 months) and lender disclosure.
 - Logs **protection recommendations** (life · CIC · IP · buildings · contents) and what the client took up.
 - Marks AR network handoff with network reference if you’re an AR firm.
-- Keeps a **Mansoor P3 audit chain** of every change (FCA SYSC 7-year retention).
+- Keeps a **P3 audit chain** of every change (FCA SYSC 7-year retention).
 - Talks to the rest of the `fall-mortgage` bundle on `BroadcastChannel('fall-mortgage')` and to the wider client mesh on `BroadcastChannel('fall-client')`.
 
 Everything lives in your browser’s IndexedDB. Wipe the browser → data gone. Export to JSON before any wipe.
@@ -81,24 +81,24 @@ index.html (single file, ~92KB)
 ├── HTML shell (header, sidebar, main view, palette, modal, toast)
 ├── CSS (oxblood/brass/cream/void · serif/sans/mono triad)
 └── <script>
-    ├── KONOMI shim (sovereign storage abstraction)
-    ├── IDB (firms · advisers · clients · cases · lenderProducts · audit · settings)
-    ├── LS fallback (lsPut/lsGet for environments without IDB)
-    ├── Mesh:
-    │   ├── fall-client (shared with IFA bundle)
-    │   ├── fall-mortgage (this bundle: case.created/updated/offered/completed/declined, procurationFee.recorded, esis.issued, sync)
-    │   └── fall-signal (estate-wide hello/ping/pong)
-    ├── Schema factories (newBlankFirm / newBlankAdviser / newBlankClient / newBlankCase)
-    ├── Affordability engine (gross→net→committed→disposable→stress-test→max-loan; BTL ICR variant)
-    ├── ESIS builder (12 sections per MCD 2016)
-    ├── Suitability sign-and-hash (SHA-256 over reason + adviser id + timestamp)
-    ├── T0 rule base (14 MCOB/FCA Q&A entries)
-    ├── Render dispatch (15 tab renderers)
-    ├── Onboarding flow (2-step firm + adviser, or skip-to-demo)
-    ├── Audit chain (Mansoor P3 extended: i, ts, tool, adviserId, clientId, caseId, action, reasoning, configVersion, prevHash, docHash, payload)
-    ├── Palette (Ctrl+K · combined T0/cases/actions)
-    ├── Settings modal (BYOK, audit toggle, export/import/wipe)
-    └── Boot (openDB → loadAllStores → initMesh → render → fingerprint)
+ ├── KONOMI shim (sovereign storage abstraction)
+ ├── IDB (firms · advisers · clients · cases · lenderProducts · audit · settings)
+ ├── LS fallback (lsPut/lsGet for environments without IDB)
+ ├── Mesh:
+ │ ├── fall-client (shared with IFA bundle)
+ │ ├── fall-mortgage (this bundle: case.created/updated/offered/completed/declined, procurationFee.recorded, esis.issued, sync)
+ │ └── fall-signal (estate-wide hello/ping/pong)
+ ├── Schema factories (newBlankFirm / newBlankAdviser / newBlankClient / newBlankCase)
+ ├── Affordability engine (gross→net→committed→disposable→stress-test→max-loan; BTL ICR variant)
+ ├── ESIS builder (12 sections per MCD 2016)
+ ├── Suitability sign-and-hash (SHA-256 over reason + adviser id + timestamp)
+ ├── T0 rule base (14 MCOB/FCA Q&A entries)
+ ├── Render dispatch (15 tab renderers)
+ ├── Onboarding flow (2-step firm + adviser, or skip-to-demo)
+ ├── Audit chain (P3 extended: i, ts, tool, adviserId, clientId, caseId, action, reasoning, configVersion, prevHash, docHash, payload)
+ ├── Palette (Ctrl+K · combined T0/cases/actions)
+ ├── Settings modal (BYOK, audit toggle, export/import/wipe)
+ └── Boot (openDB → loadAllStores → initMesh → render → fingerprint)
 ```
 
 ### Schema conformance
@@ -113,16 +113,16 @@ Stores: `firms` · `advisers` · `clients` · `cases` · `lenderProducts` · `au
 
 - `fall-client` — shared IFA-bundle client/adviser/firm sync (heritage from FallAdviser v2)
 - `fall-mortgage` — case lifecycle events:
-  - `case.created` / `case.updated` / `case.offered` / `case.completed` / `case.declined`
-  - `procurationFee.recorded`
-  - `esis.issued` (broadcasts the snapshot)
-  - `esis.handoff` (target: fallmortgagepaper)
-  - `sync.request` / `sync.snapshot` (boot-time merge by `updatedAt`)
+ - `case.created` / `case.updated` / `case.offered` / `case.completed` / `case.declined`
+ - `procurationFee.recorded`
+ - `esis.issued` (broadcasts the snapshot)
+ - `esis.handoff` (target: fallmortgagepaper)
+ - `sync.request` / `sync.snapshot` (boot-time merge by `updatedAt`)
 - `fall-signal` — estate-wide hello / ping / pong / si-didy query relay
 
 ### Audit chain
 
-Mansoor P3 extended. Every write appends an entry signed with:
+P3 extended. Every write appends an entry signed with:
 ```
 docHash = sha256(prevHash + ts + action + adviserId + clientId + caseId + payload)
 ```
