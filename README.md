@@ -8,7 +8,7 @@ Prime 859 · v1.0.0 · MIT · Anchor of the `fall-mortgage` bundle.
 
 ## For mortgage brokers
 
-You opened a case for the Patel residential purchase. You ran the fact-find — Alice on £62k base, £8k bonus; £340k loan against a £425k Croydon terrace; Halifax 2-year fix at 4.49%. FallMortgage:
+You opened a case for the Patel residential Access. You ran the fact-find — Alice on TBAk base, TBAk bonus; TBAk loan against a TBAk Croydon terrace; Halifax 2-year fix at 4.49%. FallMortgage:
 
 - Holds **every applicant, property, loan and affordability number** on the case record (FCA SS3/19 stress test built in: max of 8% floor or product rate + 3%).
 - Generates the **ESIS** (European Standardised Information Sheet · MCD 2016 · MCOB 5A) as a frozen snapshot at issue.

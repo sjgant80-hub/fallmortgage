@@ -228,22 +228,19 @@ tr.clickable:hover{background:var(--ink)}
     'llama-3b':  { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',   size: '~2GB',   label: '3B · balanced · default · most laptops' },
     'qwen-7b':   { id: 'Qwen2.5-7B-Instruct-q4f16_1-MLC',     size: '~5GB',   label: '7B · capable · needs decent GPU (M-series Mac / 8GB+ VRAM)' },
     'llama-8b':  { id: 'Llama-3.1-8B-Instruct-q4f16_1-MLC',   size: '~5GB',   label: '8B · common · needs decent GPU' },
-    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' },
-  };
+    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' }};
   const DEFAULT_MODEL = 'llama-3b';
 
   const T3_PROVIDERS = {
     anthropic: { label: 'Anthropic Claude', models: ['claude-sonnet-4-5','claude-opus-4-7','claude-haiku-4-5'], default: 'claude-sonnet-4-5', url: 'https://api.anthropic.com/v1/messages' },
     openai:    { label: 'OpenAI',           models: ['gpt-4o','gpt-4o-mini','o1-mini'],                          default: 'gpt-4o-mini',      url: 'https://api.openai.com/v1/chat/completions' },
-    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' },
-  };
+    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' }};
 
   // ─── State ───────────────────────────────────────────────────────
   const STATE = {
     config: loadConfig(),
     ai: { ready: false, loading: false, progress: 0, engine: null, model: null },
-    mesh: { active: false, peers: new Map(), bc: null, signal: null },
-  };
+    mesh: { active: false, peers: new Map(), bc: null, signal: null }};
 
   function loadConfig() {
     try { return JSON.parse(localStorage.getItem('fall-kit.config') || '{}'); }
@@ -310,8 +307,7 @@ tr.clickable:hover{background:var(--ink)}
     if (tier === 'T2' && STATE.ai.ready && STATE.ai.engine) {
       const r = await STATE.ai.engine.chat.completions.create({
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        max_tokens: maxTokens,
-      });
+        max_tokens: maxTokens});
       return r.choices[0].message.content;
     }
     if (tier === 'T3' && STATE.config.api_key && STATE.config.api_provider) {
@@ -328,8 +324,7 @@ tr.clickable:hover{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.anthropic.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('Anthropic ' + r.status + ': ' + (await r.text()).slice(0, 200));
       const j = await r.json();
       return j.content[0].text;
@@ -338,8 +333,7 @@ tr.clickable:hover{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.openai.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + key },
-        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('OpenAI ' + r.status);
       const j = await r.json();
       return j.choices[0].message.content;
@@ -348,8 +342,7 @@ tr.clickable:hover{background:var(--ink)}
       const r = await fetch(T3_PROVIDERS.google.url + model + ':generateContent?key=' + encodeURIComponent(key), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } }),
-      });
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } })});
       if (!r.ok) throw new Error('Google ' + r.status);
       const j = await r.json();
       return j.candidates[0].content.parts[0].text;
@@ -590,8 +583,7 @@ tr.clickable:hover{background:var(--ink)}
     openMint: openMint,  // v1.2 · launch kcc-mint with this seed prefilled as parent
     MODELS: WEBLLM_MODELS,
     PROVIDERS: T3_PROVIDERS,
-    state: STATE,
-  };
+    state: STATE};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -637,9 +629,9 @@ tr.clickable:hover{background:var(--ink)}
  <div class="row" style="gap:4px;margin:0">
  <select id="caseFilterType" onchange="renderSidebar()" style="font-size:11px">
  <option value="">all types</option>
- <option value="residential-purchase">res-purchase</option>
+ <option value="residential-Access">res-Access</option>
  <option value="residential-remortgage">res-remortgage</option>
- <option value="BTL-purchase">BTL-purchase</option>
+ <option value="BTL-Access">BTL-Access</option>
  <option value="BTL-remortgage">BTL-remortgage</option>
  <option value="further-advance">further-advance</option>
  <option value="bridge">bridge</option>
@@ -1041,7 +1033,7 @@ function newBlankCase(clientId){
  return{
  id:'mc_'+uid(),firmId:fid,clientId:clientId||'',createdAt:Date.now(),ts:Date.now(),updatedAt:Date.now(),
  ref:nextCaseRef(),
- type:'residential-purchase',
+ type:'residential-Access',
  property:{address:'',value:0,postcode:'',type:'house',tenure:'freehold',constructionYear:0},
  loan:{amount:0,term:25,repayment:'capital-interest',ltv:0,monthlyPayment:0,rate:0,productCode:'',lender:''},
  affordability:{income:0,expenditure:0,dependants:0,dti:0,stressTested:false,stressRate:0},
@@ -1175,10 +1167,10 @@ const T0_RULES=[
  {q:['mmr','affordability','post','2014','review'],a:'MMR (Mortgage Market Review) took effect 26 April 2014. Key changes: (a) full income evidence required (no self-cert), (b) affordability assessment must consider committed expenditure + basic essentials + plausible future changes, (c) stress test against rate rises, (d) interest-only requires credible repayment vehicle. FallMortgage Affordability tab implements gross→net→committed→disposable→stress chain.',src:'PS14/3 / MCOB 11'},
  {q:['high','ltv','95','stress','test'],a:'Higher-LTV lending (>85% LTV especially 95% Mortgage Guarantee Scheme) commonly attracts: (a) tighter stress test, (b) restricted LTI typically capped at 4.49x, (c) higher product rate. Bank of England flow limit: max 15% of a lender\'s new mortgages above 4.5x LTI per quarter. FallMortgage flags LTV>85% in affordability tab.',src:'BoE FPC / MG Scheme'},
  {q:['btl','portfolio','landlord','pra','ss13'],a:'PRA SS13/16 portfolio landlord rules (4+ mortgaged BTL properties): underwriting must use specialist approach considering experience, portfolio cashflow, asset/liability statement, business plan. Stress at min 5.5% (PRA-aligned). ICR typically 145% for higher-rate taxpayer / limited co, 125% basic-rate. FallMortgage uses 5.5% / 1.45 ICR defaults — adjust per-lender.',src:'PRA SS13/16'},
- {q:['help','to','buy','schemes','status'],a:'Help to Buy Equity Loan (England): CLOSED to new applications 31 Mar 2023, completions wrapped Mar 2023. Help to Buy ISA: CLOSED to new accounts 30 Nov 2019, existing holders may still claim bonus until 1 Dec 2030. Lifetime ISA: open, 25% bonus to £1k/yr on £4k, first-home up to £450k or age 60+ pension use. Shared Ownership: open, all UK. Mortgage Guarantee Scheme: extended to end June 2025 — verify current status before use.',src:'gov.uk schemes register'},
- {q:['first','time','buyer','isa','bonus','lisa'],a:'Lifetime ISA (LISA) first-time buyer: pay in up to £4,000/yr (counts toward £20k ISA allowance), Government adds 25% bonus = up to £1,000/yr. Use for first home up to £450,000. Penalty 25% on non-qualifying withdrawal (effectively a 6.25% net loss of own contribution). Account must be open 12+ months before first-home use. FallMortgage records LISA contribution per applicant as part of deposit source.',src:'gov.uk / HMRC'},
+ {q:['help','to','buy','schemes','status'],a:'Help to Buy Equity Loan (England): CLOSED to new applications 31 Mar 2023, completions wrapped Mar 2023. Help to Buy ISA: CLOSED to new accounts 30 Nov 2019, existing holders may still claim bonus until 1 Dec 2030. Lifetime ISA: open, 25% bonus to TBAk/yr on TBAk, first-home up to TBAk or age 60+ pension use. Shared Ownership: open, all UK. Mortgage Guarantee Scheme: extended to end June 2025 — verify current status before use.',src:'gov.uk schemes register'},
+ {q:['first','time','buyer','isa','bonus','lisa'],a:'Lifetime ISA (LISA) first-time buyer: pay in up to TBA (counts toward TBAk ISA allowance), Government adds 25% bonus = up to TBA. Use for first home up to TBA. Penalty 25% on non-qualifying withdrawal (effectively a 6.25% net loss of own contribution). Account must be open 12+ months before first-home use. FallMortgage records LISA contribution per applicant as part of deposit source.',src:'gov.uk / HMRC'},
  {q:['self','employed','proof','income','sa302'],a:'Self-employed proof of income for UK mortgage: (a) SA302 + Tax Year Overview for last 2-3 years (some lenders accept 1 year + accountant cert), (b) accountant\'s certificate (ACA/ACCA/CIMA/AAT/CIOT), (c) full statutory accounts for limited company directors, (d) business bank statements 3-6 months. Lenders typically average last 2 years\' profit; some use latest year if higher OR lower (conservative). Day-one director still tricky.',src:'lender criteria'},
- {q:['contractor','mortgage','day','rate','gross'],a:'Contractor mortgage day-rate calculation: typical lender formula = day rate × 5 days × 46-48 weeks = annualised gross. (FallMortgage default: dayRate × 46 weeks.) Lenders that accept contractor income on day-rate basis: Halifax, Clydesdale, Skipton, Kensington, Newcastle BS, others. Usually need: (a) 12+ months contracting history (some accept 6), (b) min £500/day or specified threshold, (c) current contract with 4+ weeks remaining.',src:'lender criteria'},
+ {q:['contractor','mortgage','day','rate','gross'],a:'Contractor mortgage day-rate calculation: typical lender formula = day rate × 5 days × 46-48 weeks = annualised gross. (FallMortgage default: dayRate × 46 weeks.) Lenders that accept contractor income on day-rate basis: Halifax, Clydesdale, Skipton, Kensington, Newcastle BS, others. Usually need: (a) 12+ months contracting history (some accept 6), (b) min TBA/day or specified threshold, (c) current contract with 4+ weeks remaining.',src:'lender criteria'},
  {q:['equity','release','ship','erc','lifetime'],a:'Equity Release Council (formerly SHIP) standards apply to lifetime mortgages and home reversion plans: (a) No-Negative-Equity Guarantee, (b) right to remain in property for life, (c) right to move (subject to lender approval) with portability, (d) independent legal advice mandatory, (e) cap on early repayment charges in defined circumstances. Adviser must hold ER1/ER2/CeRER qualification beyond CeMAP. MCOB 8.5A applies.',src:'Equity Release Council / MCOB 8.5A'}
 ];
 function answerQuestion(query){
@@ -1462,7 +1454,7 @@ async function setCaseStatus(id,st){
 }
 async function cycleType(id){
  const mc=state.cases.find(x=>x.id===id);if(!mc)return;
- const types=['residential-purchase','residential-remortgage','BTL-purchase','BTL-remortgage','further-advance','bridge','second-charge','equity-release','shared-ownership','help-to-buy'];
+ const types=['residential-Access','residential-remortgage','BTL-Access','BTL-remortgage','further-advance','bridge','second-charge','equity-release','shared-ownership','help-to-buy'];
  const i=types.indexOf(mc.type);mc.type=types[(i+1)%types.length];
  await saveCase(mc,'type changed to '+mc.type);render();toast(mc.type);
 }
@@ -2163,7 +2155,7 @@ async function seedDemoAndComplete(){
  const cl=newBlankClient(a.id);cl.title='Mr';cl.firstName='Alice';cl.lastName='Patel';cl.dob='1985-04-12';cl.email='alice@example.com';cl.phone='+44 7700 900000';cl.address={line1:'12 High Street',line2:'',city:'London',region:'England',postcode:'SW1A 1AA',country:'GB',since:'2018-06-01'};cl.nino='AB123456C';cl.nationality='GB';
  await saveClient(cl,'demo client seeded');
  // demo case
- const mc=newBlankCase(cl.id);mc.adviserId=a.id;mc.ref='MC-DEMO-0001';mc.type='residential-purchase';
+ const mc=newBlankCase(cl.id);mc.adviserId=a.id;mc.ref='MC-DEMO-0001';mc.type='residential-Access';
  mc.property={address:'45 Oak Avenue, Croydon CR0 1AB',value:425000,postcode:'CR0 1AB',type:'house',tenure:'freehold',constructionYear:1995};
  mc.loan={amount:340000,term:30,repayment:'capital-interest',ltv:0.80,monthlyPayment:0,rate:4.49,productCode:'HFX-2YF-489',lender:'Halifax'};
  mc.product={rate:4.49,type:'fixed',period:2,ercSchedule:[{fromYr:0,toYr:1,pct:2.0},{fromYr:1,toYr:2,pct:1.0}]};
@@ -2173,10 +2165,10 @@ async function seedDemoAndComplete(){
  mc.procurationFee=680;
  mc.procurationFeeDetails={lender:'Halifax',paidDate:null,clawbackUntil:null,clawbackRisk:false,clawbackMonths:24};
  mc.protectionRecommended=[{type:'life-mortgage',sumInsured:340000,insurer:'Royal London',monthlyPremium:24.50,termYears:30,status:'recommended'},{type:'buildings-contents',sumInsured:425000,insurer:'Direct Line',monthlyPremium:32.00,termYears:1,status:'recommended'}];
- mc.suitabilityReason='Customer prefers payment certainty for short-term while planning second child. 2-year fix at 4.49% is competitive vs market 5-year at 4.65%; ERC profile (2%/1%) supports remortgage at end of fix when family planning is clearer. Halifax accepts £8k bonus on 50% basis aligning with their criteria for this LTV band.';
+ mc.suitabilityReason='Customer prefers payment certainty for short-term while planning second child. 2-year fix at 4.49% is competitive vs market 5-year at 4.65%; ERC profile (2%/1%) supports remortgage at end of fix when family planning is clearer. Halifax accepts TBAk bonus on 50% basis aligning with their criteria for this LTV band.';
  mc.suitabilityLenderReason='Halifax service standards meet 8-week completion target. Standard valuer panel includes 1995 brick-built property type. Halifax 80% LTV product band is competitive for this profile.';
  mc.suitabilityAlternativesReason='Considered Nationwide 2yr (slightly higher rate, longer offer turnaround); considered Santander tracker (no certainty during bonus-volatile period); considered 5yr fix (locks in longer when remortgage opportunity expected at year 2).';
- mc.notes=[{ts:Date.now()-3*86400000,adviserId:a.id,text:'DEMO CASE — Patel residential purchase · overwrite me with real case data'}];
+ mc.notes=[{ts:Date.now()-3*86400000,adviserId:a.id,text:'DEMO CASE — Patel residential Access · overwrite me with real case data'}];
  mc.timeline=[{ts:Date.now()-7*86400000,adviserId:a.id,what:'case created (fact-find)'},{ts:Date.now()-3*86400000,adviserId:a.id,what:'product selected: Halifax 2yr fix 4.49%'}];
  mc.keyDates={exchangeDate:Date.now()+30*86400000,completionDate:Date.now()+60*86400000,productEndDate:Date.now()+(2*365.25)*86400000};
  await saveCase(mc,'demo case seeded');
