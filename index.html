@@ -2182,7 +2182,7 @@ function renderProperty(view){
  <div class="field"><label>expected monthly rent £</label><input type="number" value="${mc.affordability.expectedRent||0}" oninput="updAff('${mc.id}','expectedRent',+this.value)"></div>
  <div class="field"><label>tenancy type</label>
  <select onchange="updProp('${mc.id}','tenancyType',this.value)">
- ${['AST','company-let','HMO','student','holiday-let','council-let','none'].map(t=>`<option value="${t}" ${mc.property.tenancyType===t?'selected':''}>${t}</option>`).join('')}
+ ${['assured-periodic','company-let','HMO','student','holiday-let','council-let','none'].map(t=>`<option value="${t}" ${mc.property.tenancyType===t?'selected':''}>${t}</option>`).join('')}
  </select></div>
  <div class="field"><label>portfolio landlord (4+ BTL)?</label>
  <select onchange="updProp('${mc.id}','portfolioLandlord',this.value==='true')">
